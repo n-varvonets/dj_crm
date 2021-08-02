@@ -124,3 +124,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Указываю в какой прилажухе будет мой аутифицированный юзер
+AUTH_USER_MODEL = 'leads.User'
