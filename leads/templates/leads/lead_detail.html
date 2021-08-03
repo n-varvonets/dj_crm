@@ -8,15 +8,9 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Hello {{ leads }}</p>
-         <p>and rigth now we put u in { %  here  % }</p>
-            <ul>
-                {% for lead in leads %}
-                <li>
-                    {{ lead }}
-                </li>
-                {% endfor %}
-            </ul>
+<h1>Lead detail</h1>
+<p>primary key of this lead is.... {{pk}} and his name and age is ...{{lead.first_name}}, {{lead.age}}
+</p>
 
 </body>
 </html>

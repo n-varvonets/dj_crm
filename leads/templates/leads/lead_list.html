@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .lead {
+            padding-top:10px;
+            padding-bottom:10px;
+            padding-left:6px;
+            padding-right:6px;
+            margin-top:10px;
+            background-color: #f6f6f6;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<p>Lead list</p>
+<p>and rigth now we put u in { % here % }</p>
+<p>This is all of leads</p>
+<ul>
+    {% for lead in leads %}
+    <li>
+        <div class="lead">
+            {{ lead }} ,
+            <!-- it norm rendered because we had def __str__ in model, but if I wanna to specify the certain field it should like below -->
+            <a href="/leads/{{ lead.pk }}">этот текст делаем ссылкой для редиректа на конкретный обьект из списка лидов {{lead.first_name}}</a>  Age: {{ lead.age }}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

@@ -4,7 +4,7 @@ from .models import Lead
 # Create your views here.
 
 
-def home_page(request):
+def lead_list(request):
     # 2) с помощью  queryset  получаем наши обьекты из модели Lead и передаеим в конткест
 
     leads = Lead.objects.all()
@@ -12,9 +12,15 @@ def home_page(request):
     context = {
         "leads": leads
     }
-    return render(request, "leads/home_page.html", context)
+    return render(request, "leads/lead_list.html", context)
 
 
-def second_page(request):
-    # return HttpResponse("Hello world")
-    return render(request, "second_page.html")
+# pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
+# полученный от от urls.py  и лаьше передавши его templates html
+def lead_detail(request, pk):
+    lead = Lead.objects.get(id=pk)
+    context = {
+        "lead": lead,
+        "pk": pk
+    }
+    return render(request, "leads/lead_detail.html", context)

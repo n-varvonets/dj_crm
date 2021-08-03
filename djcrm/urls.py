@@ -8,6 +8,6 @@ urlpatterns = [
     # path('second_page/', second_page),
 
     # 3)it necessary to indicate root.. for example with subdomains ____:8000/leads/all with include func...
-    path('home_page/', include("leads.urls", namespace="leads")),  # namespace - уникальный индетификатор урлов внутри нашего уникального проекта
+    path('leads/', include("leads.urls", namespace="leads")),  # namespace - уникальный индетификатор урлов внутри нашего уникального проекта
 
 ]
