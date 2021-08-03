@@ -3,12 +3,13 @@
 # by default using from main apps(djcrm) urls which indicated in setting
 
 from django.urls import path
-from .views import lead_list, lead_detail
+from .views import lead_list, lead_detail, lead_create
 
 # уникальный индекфикатор урлдов нашего app, который был получен из djcrm/urls.py
 app_name = "leads"
 
 urlpatterns = [
     path('', lead_list),
-    path('<pk>/', lead_detail),  # pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
+    path('<int:pk>/', lead_detail),  # pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
+    path('create/', lead_create)
 ]
