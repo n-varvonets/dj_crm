@@ -25,7 +25,7 @@ class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
 
 
 # Models Manager(http://i.imgur.com/r4w5Ixj.png) and Querysets(http://i.imgur.com/suBI35s.png) to database for model(http://i.imgur.com/3LAeJrI.png)
