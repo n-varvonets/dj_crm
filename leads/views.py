@@ -5,6 +5,10 @@ from .forms import LeadForm, LeadModelForm
 # Create your views here.
 
 
+def landing_page(request):
+    return render(request, "landing.html")
+
+
 def lead_list(request):
     # 2) с помощью  queryset  получаем наши обьекты из модели Lead и передаеим в конткест
     leads = Lead.objects.all()
