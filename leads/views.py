@@ -21,7 +21,7 @@ def lead_detail(request, pk):
     lead = Lead.objects.get(id=pk)
     context = {
         "lead": lead,
-        "pk": pk
+        # "pk": pk  - it's unnecessary to pass pk into the form because pk settle into the lead {{ lead.pk }}
     }
     return render(request, "leads/lead_detail.html", context)
 
@@ -39,6 +39,51 @@ def lead_create(request):
         "form": form
     }
     return render(request, "leads/lead_create.html", context)
+
+
+def lead_update(request, pk):
+    """also works with all existing fields including relation O2M, M2M"""
+    lead = Lead.objects.get(id=pk)  # grab the specific lead
+    form = LeadModelForm(instance=lead)  # при новом посте(апдейте) внутрь передаем нашу уже созданную запись,которую хотим обновить
+    if request.method == "POST":
+        form = LeadModelForm(request.POST, instance=lead)
+        if form.is_valid():
+            form.save()  # instead standart Form
+            return redirect("/leads")
+    context = {
+        "lead": lead,
+        "form": form
+    }
+    return render(request, "leads/lead_update.html", context)
+
+def lead_delete(request, pk):
+    lead = Lead.objects.get(id=pk)  # grab the specific lead
+    lead.delete()
+    return redirect("/leads")
+
+# def lead_update(request, pk):
+#     lead = Lead.objects.get(id=pk)  # grab the specific lead
+#     form = LeadForm()  # при новом посте создаем новый его инстанс
+#     if request.method == "POST":
+#         """if true than we post data into the form"""
+#         form = LeadForm(request.POST)  # >>> <tr><th><label for="id_first_name">First name:</label></th><td><input type="text" name="first_name" value="21"
+#         if form.is_valid():
+#             first_name = form.cleaned_data['first_name']
+#             last_name = form.cleaned_data['last_name']
+#             age = form.cleaned_data['age']
+#             agent = Agent.objects.first()
+#             """instead the creating a new lead we use update"""
+#             lead.first_name = first_name
+#             lead.last_name = last_name
+#             lead.age = age
+#             lead.agent = agent
+#             lead.save()  # it necessary to commit changes/ or to save them to DB
+#             return redirect("/leads")
+#     context = {
+#         "lead": lead,
+#         "form":form
+#     }
+#     return render(request, "leads/lead_update.html", context)
 
 
 # def lead_create(request):
