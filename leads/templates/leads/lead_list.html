@@ -1,30 +1,12 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <style>
-        .lead {
-            padding-top:10px;
-            padding-bottom:10px;
-            padding-left:6px;
-            padding-right:6px;
-            margin-top:10px;
-            background-color: #f6f6f6;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-<p>Lead list</p>
+{% extends "base.html" %}
+{% block content %}
 
+<p>Lead list</p>
 <!--<a href="/leads/create/">Create the lead</a>  - this href is hard coding link because if in url.py I decide to change
 the path - it also necessary to change url for example her and in many others places... and for preventing it need
 to add in url.py nname and look at code below-->
-<a href="{% url 'leads:lead-create' %}">Create the lead</a> <!-- "leads" - this is namespace URL( http://i.imgur.com/CpdSEYG.png) and "lead-create" this is name of URL(http://i.imgur.com/XOZWRXn.png)  -->
+<a href="{% url 'leads:lead-create' %}">Create the
+    lead</a> <!-- "leads" - this is namespace URL( http://i.imgur.com/CpdSEYG.png) and "lead-create" this is name of URL(http://i.imgur.com/XOZWRXn.png)  -->
 <hr>
 
 <p>and rigth now we put u in { % here % }</p>
@@ -35,12 +17,13 @@ to add in url.py nname and look at code below-->
         <div class="lead">
             {{ lead }} ,
             <!-- it norm rendered because we had def __str__ in model, but if I wanna to specify the certain field it should like below -->
-<!--            <a href="/leads/{{ lead.pk }}">этот текст делаем ссылкой для редиректа на конкретный обьект из списка лидов {{lead.first_name}}</a>  Age: {{ lead.age }}   -  it is the hard coding-->
-            <a href="{% url 'leads:lead-detail' lead.pk %}">этот текст делаем ссылкой для редиректа на конкретный обьект из списка лидов {{lead.first_name}}</a>
+            <!--            <a href="/leads/{{ lead.pk }}">этот текст делаем ссылкой для редиректа на конкретный обьект из списка лидов {{lead.first_name}}</a>  Age: {{ lead.age }}   -  it is the hard coding-->
+            <a href="{% url 'leads:lead-detail' lead.pk %}">этот текст делаем ссылкой для редиректа на конкретный обьект
+                из списка лидов {{lead.first_name}}</a>
         </div>
     </li>
     {% endfor %}
 </ul>
 
-</body>
-</html>
+{% endblock content %}
+
