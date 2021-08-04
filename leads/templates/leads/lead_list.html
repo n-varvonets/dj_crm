@@ -20,7 +20,11 @@
 </head>
 <body>
 <p>Lead list</p>
-<a href="/leads/create/">Create the lead</a>
+
+<!--<a href="/leads/create/">Create the lead</a>  - this href is hard coding link because if in url.py I decide to change
+the path - it also necessary to change url for example her and in many others places... and for preventing it need
+to add in url.py nname and look at code below-->
+<a href="{% url 'leads:lead-create' %}">Create the lead</a> <!-- "leads" - this is namespace URL( http://i.imgur.com/CpdSEYG.png) and "lead-create" this is name of URL(http://i.imgur.com/XOZWRXn.png)  -->
 <hr>
 
 <p>and rigth now we put u in { % here % }</p>
@@ -31,7 +35,8 @@
         <div class="lead">
             {{ lead }} ,
             <!-- it norm rendered because we had def __str__ in model, but if I wanna to specify the certain field it should like below -->
-            <a href="/leads/{{ lead.pk }}">этот текст делаем ссылкой для редиректа на конкретный обьект из списка лидов {{lead.first_name}}</a>  Age: {{ lead.age }}
+<!--            <a href="/leads/{{ lead.pk }}">этот текст делаем ссылкой для редиректа на конкретный обьект из списка лидов {{lead.first_name}}</a>  Age: {{ lead.age }}   -  it is the hard coding-->
+            <a href="{% url 'leads:lead-detail' lead.pk %}">этот текст делаем ссылкой для редиректа на конкретный обьект из списка лидов {{lead.first_name}}</a>
         </div>
     </li>
     {% endfor %}

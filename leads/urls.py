@@ -8,10 +8,21 @@ from .views import lead_list, lead_detail, lead_create, lead_update, lead_delete
 # уникальный индекфикатор урлдов нашего app, который был получен из djcrm/urls.py
 app_name = "leads"
 
+
+
+"""this is hardocoding not using URL namespace.. and if I decide to change the url - it also necessary to change in ALL PLACES in templates whenewere I were referenced at them"""
+# urlpatterns = [
+#     path('', lead_list),
+#     path('<int:pk>/', lead_detail),  # pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
+#     path('<int:pk>/update/', lead_update),
+#     path('<int:pk>/delete/', lead_delete),
+#     path('create/', lead_create),
+# ]
+
 urlpatterns = [
-    path('', lead_list),
-    path('<int:pk>/', lead_detail),  # pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
-    path('<int:pk>/update/', lead_update),
-    path('<int:pk>/delete/', lead_delete),
-    path('create/', lead_create),
+    path('', lead_list, name='lead-list'),
+    path('<int:pk>/', lead_detail, name='lead-detail'),  # pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
+    path('<int:pk>/update/', lead_update, name='lead-update'),
+    path('<int:pk>/delete/', lead_delete, name='lead-delete'),
+    path('create/', lead_create, name='lead-create'),
 ]

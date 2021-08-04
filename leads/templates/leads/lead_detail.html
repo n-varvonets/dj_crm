@@ -9,14 +9,17 @@
 </head>
 <body>
 <h1>Lead detail</h1>
-<a href="/leads">Go back to leads</a>
+<a href="{% url 'leads:lead-list' %}">Go back to leads</a>
 <hr>
 <p>primary key of this lead is.... {{pk}} and his name and age is ...{{lead.first_name}}, {{lead.age}}
 </p>
 <p>The agent responsible for this lead is : {{ lead.agent }}</p>
 <hr>
-<a href="/leads/{{ lead.pk }}/update/">Update</a>
-<a href="/leads/{{ lead.pk }}/delete/">Delete</a>
+<!--<a href="/leads/{{ lead.pk }}/update/">Update</a> - hard code URL -->
+<!--<a href="/leads/{{ lead.pk }}/delete/">Delete</a> - hard code URL -->
+<a href="{% url 'leads:lead-update' lead.pk %}">Update</a>
+<a href="{% url 'leads:lead-delete' lead.pk %}">Delete</a>
+
 
 </body>
 </html>
