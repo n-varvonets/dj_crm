@@ -3,12 +3,21 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Lead, Agent
 from django.core.mail import send_mail
-from .forms import LeadForm, LeadModelForm
+from .forms import LeadForm, LeadModelForm, CustomUserCreationForm
 # Create your views here.
 
 
 """CRUD+L - Create, Retrieve, Update and Delete + List 
 this all actions which u can categorized any website... django.views.generic - has all of CRUD """
+
+
+class SignupView(CreateView):
+    template_name = "registration/signup.html"
+    form_class = CustomUserCreationForm
+
+    def get_success_url(self):
+        # return "/leads" - this is hard coding... instead of that we can use dynamically by func of reverse for namespace of URL
+        return reverse("login")
 
 
 class LandingPageView(TemplateView):

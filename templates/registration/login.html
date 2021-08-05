@@ -1,0 +1,11 @@
+<!--http://i.imgur.com/lvTTMiW.png - that why need to create template by this way-->
+{% extends 'base.html' %}
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+</form>
+
+{% endblock content %}
