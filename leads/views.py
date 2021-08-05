@@ -1,12 +1,27 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Lead, Agent
 from .forms import LeadForm, LeadModelForm
 # Create your views here.
 
 
+"""CRUD+L - Create, Retrieve, Update and Delete + List 
+this all actions which u can categorized any website... django.views.generic - has all of CRUD """
+
+
+class LandingPageView(TemplateView):
+    template_name = "landing.html"
+
+
 def landing_page(request):
     return render(request, "landing.html")
+
+
+class LeadListView(ListView):
+    template_name = "leads/lead_list.html"
+    queryset = Lead.objects.all()  # getting all list of records(leads).... also by default in context passed object_list!!!! not leads!!!
+    # context_object_name = "leads"  >>> but also we can indicate name of variable
 
 
 def lead_list(request):
@@ -15,9 +30,14 @@ def lead_list(request):
     # 1)можно третьим параметром передавать в темплейты контекст(наши переменные)  и потом во вьюхах их принимать {{_}}
     context = {
         "leads": leads
+        # "object_list": leads >>> it's works for  jango.views.generic LIST
     }
     return render(request, "leads/lead_list.html", context)
 
+
+class LeadDetailView(DetailView):
+    template_name = "leads/lead_detail.html"
+    queryset = Lead.objects.all()
 
 # pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
 # полученный от от urls.py  и лаьше передавши его templates html
@@ -28,6 +48,16 @@ def lead_detail(request, pk):
         # "pk": pk  - it's unnecessary to pass pk into the form because pk settle into the lead {{ lead.pk }}
     }
     return render(request, "leads/lead_detail.html", context)
+
+
+class LeadCreateView(CreateView):
+    template_name = "leads/lead_create.html"
+    # we have to pass the form that we want to work with
+    form_class = LeadModelForm
+
+    def get_success_url(self):
+        # return "/leads" - this is hard coding... instead of that we can use dynamically by func of reverse for namespace of URL
+        return reverse("leads:lead-list")
 
 
 def lead_create(request):
@@ -45,6 +75,14 @@ def lead_create(request):
     return render(request, "leads/lead_create.html", context)
 
 
+class LeadUpdateView(UpdateView):
+    template_name = "leads/lead_update.html"
+    queryset = Lead.objects.all()
+    form_class = LeadModelForm
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
+
 def lead_update(request, pk):
     """also works with all existing fields including relation O2M, M2M"""
     lead = Lead.objects.get(id=pk)  # grab the specific lead
@@ -59,6 +97,15 @@ def lead_update(request, pk):
         "form": form
     }
     return render(request, "leads/lead_update.html", context)
+
+
+class LeadDeleteView(DeleteView):
+    template_name = "leads/lead_delete.html"
+    queryset = Lead.objects.all()
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
+
 
 def lead_delete(request, pk):
     lead = Lead.objects.get(id=pk)  # grab the specific lead
