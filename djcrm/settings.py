@@ -133,3 +133,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Указываю в какой прилажухе будет мой аутифицированный юзер
 AUTH_USER_MODEL = 'leads.User'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' - that's how to configure email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # but right now I want to send email in console
