@@ -74,6 +74,3 @@ class LeadDeleteView(LoginRequiredMixin, DeleteView):
         return reverse("leads:lead-list")
 
 
-
-
-

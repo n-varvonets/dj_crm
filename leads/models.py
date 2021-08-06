@@ -1,7 +1,7 @@
 from django.db import models
 # from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AbstractUser # for customization user
-
+from django.contrib.auth.models import AbstractUser  # for customization user
+from django.db.models.signals import post_save  # post_save activated once something was created
 # Create your models here.
 
 # User = get_user_model()
@@ -9,6 +9,13 @@ from django.contrib.auth.models import AbstractUser # for customization user
 # customize authed user from django.contrib
 class User(AbstractUser):
     pass
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
 
 
 class Lead(models.Model):
@@ -23,9 +30,26 @@ class Lead(models.Model):
 
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
+
+
+def post_user_created_signal(sender, instance, created, **kwargs):
+    """we gonna listen once the user will something create in db"""
+    """so we want to call this func when we received the POST-save event"""
+    # print(instance)  # >>> Nick
+    # print(sender)  # >>> <class 'leads.models.User'>
+    # print(created)  # >>> False - tells us about creating new record or his updated. False - because I've updated his.
+    if created:
+        UserProfile.objects.create(user=instance)
+
+
+"""so we taken a signal from sender model(once a new record will be created this method execute the indicated func)"""
+post_save.connect(post_user_created_signal, sender=User)
+
+
 
 
 # Models Manager(http://i.imgur.com/r4w5Ixj.png) and Querysets(http://i.imgur.com/suBI35s.png) to database for model(http://i.imgur.com/3LAeJrI.png)
