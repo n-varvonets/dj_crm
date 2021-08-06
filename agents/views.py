@@ -28,3 +28,25 @@ class AgentCreateView(LoginRequiredMixin, generic.CreateView):
         agent.organization = self.request.user.userprofile
         agent.save()  # а теперь с атрибутом organization можем сохранить только что созданную запись агента
         return super(AgentCreateView, self).form_valid(form)
+
+
+class AgentDetailView(LoginRequiredMixin, generic.DetailView):
+    template_name = "agents/agent_detail.html"
+    context_object_name = 'agent'  # for template to indicate our context
+
+    def get_queryset(self):
+        return Agent.objects.all()
+
+
+class AgentUpdateView(LoginRequiredMixin, generic.UpdateView):
+    template_name = "agents/agent_update.html"
+    form_class = AgentModelForm
+
+    def get_success_url(self):
+        return reverse("agents:agent-list")
+
+    def get_queryset(self):
+        return Agent.objects.all()
+
+# class AgentDeleteView(LoginRequiredMixin, generic.DeleteView):
+#
