@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Lead, Agent
 from django.core.mail import send_mail
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LeadForm, LeadModelForm, CustomUserCreationForm
 # Create your views here.
 
@@ -24,18 +25,18 @@ class LandingPageView(TemplateView):
     template_name = "landing.html"
 
 
-class LeadListView(ListView):
+class LeadListView(LoginRequiredMixin, ListView):
     template_name = "leads/lead_list.html"
     queryset = Lead.objects.all()  # getting all list of records(leads).... also by default in context passed object_list!!!! not leads!!!
     # context_object_name = "leads"  >>> but also we can indicate name of variable
 
 
-class LeadDetailView(DetailView):
+class LeadDetailView(LoginRequiredMixin, DetailView):
     template_name = "leads/lead_detail.html"
     queryset = Lead.objects.all()
 
 
-class LeadCreateView(CreateView):
+class LeadCreateView(LoginRequiredMixin, CreateView):
     template_name = "leads/lead_create.html"
     # we have to pass the form that we want to work with
     form_class = LeadModelForm
@@ -56,7 +57,7 @@ class LeadCreateView(CreateView):
         return super(LeadCreateView, self).form_valid(form)  # вызываем родительский метод form_valid что бы проверить на корректность данных в форме
 
 
-class LeadUpdateView(UpdateView):
+class LeadUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "leads/lead_update.html"
     queryset = Lead.objects.all()
     form_class = LeadModelForm
@@ -65,7 +66,7 @@ class LeadUpdateView(UpdateView):
         return reverse("leads:lead-list")
 
 
-class LeadDeleteView(DeleteView):
+class LeadDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "leads/lead_delete.html"
     queryset = Lead.objects.all()
 

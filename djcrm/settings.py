@@ -138,3 +138,4 @@ AUTH_USER_MODEL = 'leads.User'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # but right now I want to send email in console
 
 LOGIN_REDIRECT_URL = '/leads'
+LOGIN_URL = '/login'  # need for LoginRequiredMixin... for redirecting from restricted page not authed users to login page.
