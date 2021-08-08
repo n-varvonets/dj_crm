@@ -10,7 +10,12 @@ class AgentsListView(LoginRequiredMixin, generic.ListView):
     template_name = "agents/agent_list.html"
 
     def get_queryset(self):
-        return Agent.objects.all()
+        # return Agent.objects.all()  # instead to return all agents we gonna return all related agents to one lead
+        """so filtered agents by they organization(UserProfile)"""
+        grab_the_actual_user_who_is_logged_in_the_site = self.request.user  # >>> New - http://i.imgur.com/gRd4djy.png - look at the userprofile
+        """and for our model Agent need to set two field on of those is organization from UserProfile(http://i.imgur.com/j4aY2wV.png)"""
+        organization = self.request.user.userprofile
+        return Agent.objects.filter(organization=organization)
 
 
 class AgentCreateView(LoginRequiredMixin, generic.CreateView):
@@ -35,7 +40,8 @@ class AgentDetailView(LoginRequiredMixin, generic.DetailView):
     context_object_name = 'agent'  # for template to indicate our context
 
     def get_queryset(self):
-        return Agent.objects.all()
+        organization = self.request.user.userprofile
+        return Agent.objects.filter(organization=organization)
 
 
 class AgentUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -46,14 +52,16 @@ class AgentUpdateView(LoginRequiredMixin, generic.UpdateView):
         return reverse("agents:agent-list")
 
     def get_queryset(self):
-        return Agent.objects.all()
+        organization = self.request.user.userprofile
+        return Agent.objects.filter(organization=organization)
 
 class AgentDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = "agents/agent_delete.html"
     context_object_name = 'agent'  # for template to indicate our context
 
     def get_queryset(self):
-        return Agent.objects.all()
+        organization = self.request.user.userprofile
+        return Agent.objects.filter(organization=organization)
 
     def get_success_url(self):
         return reverse("agents:agent-list")
