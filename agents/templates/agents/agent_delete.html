@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{% url 'agents:agent-list' %}">Go back to agent</a>
+<hr/>
+<h1>Are you sure you want to delete this agent?</h1>
+<form method="post">
+    {% csrf_token %}<!-- csrf_token - security way to post the information-->
+    {{ form.as_p }} <!--.as_p - как параграф... просто вертикально ставить  fields of model-->
+    <button type="submit">Submit</button>
+</form>
+{% endblock content %}
