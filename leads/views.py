@@ -5,6 +5,7 @@ from .models import Lead, Agent
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LeadForm, LeadModelForm, CustomUserCreationForm
+from agents.mixins import OrganiserAndLoginRequiredMixin
 # Create your views here.
 
 
@@ -56,7 +57,7 @@ class LeadListView(LoginRequiredMixin, ListView):
 #     return render(request, "leads/lead_detail.html", context)
 
 
-class LeadDetailView(LoginRequiredMixin, DetailView):
+class LeadDetailView(OrganiserAndLoginRequiredMixin, DetailView):
     template_name = "leads/lead_detail.html"
     queryset = Lead.objects.all()
 
@@ -76,7 +77,7 @@ class LeadDetailView(LoginRequiredMixin, DetailView):
 #     return render(request, "leads/lead_create.html", context)
 
 
-class LeadCreateView(LoginRequiredMixin, CreateView):
+class LeadCreateView(OrganiserAndLoginRequiredMixin, CreateView):
     template_name = "leads/lead_create.html"
     # we have to pass the form that we want to work with
     form_class = LeadModelForm
@@ -113,7 +114,7 @@ class LeadCreateView(LoginRequiredMixin, CreateView):
 #     return render(request, "leads/lead_update.html", context)
 
 
-class LeadUpdateView(LoginRequiredMixin, UpdateView):
+class LeadUpdateView(OrganiserAndLoginRequiredMixin, UpdateView):
     template_name = "leads/lead_update.html"
     queryset = Lead.objects.all()
     form_class = LeadModelForm
@@ -127,7 +128,7 @@ class LeadUpdateView(LoginRequiredMixin, UpdateView):
 #     lead.delete()
 #     return redirect("/leads")
 
-class LeadDeleteView(LoginRequiredMixin, DeleteView):
+class LeadDeleteView(OrganiserAndLoginRequiredMixin, DeleteView):
     template_name = "leads/lead_delete.html"
     queryset = Lead.objects.all()
 
