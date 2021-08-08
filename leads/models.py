@@ -8,7 +8,10 @@ from django.db.models.signals import post_save  # post_save activated once somet
 
 # customize authed user from django.contrib
 class User(AbstractUser):
-    pass
+    """so for checking if the User is organizer - show him the whole list if not then it should the agent
+    who can see only leads belong to his organization(UserProfile)"""
+    is_organizer = models.BooleanField(default=True)
+    is_agent = models.BooleanField(default=False)
 
 
 class UserProfile(models.Model):
