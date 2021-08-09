@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LeadForm, LeadModelForm, CustomUserCreationForm
 from agents.mixins import OrganiserAndLoginRequiredMixin
+
 # Create your views here.
 
 
@@ -31,17 +32,18 @@ class LandingPageView(TemplateView):
 
 
 # def lead_list(request):
-    # 2) с помощью  queryset  получаем наши обьекты из модели Lead и передаеим в конткест
-    # leads = Lead.objects.all()
-    # 1)можно третьим параметром передавать в темплейты контекст(наши переменные)  и потом во вьюхах их принимать {{_}}
-    # context = {
-    #     "leads": leads
-    #     # "object_list": leads >>> it's works for  jango.views.generic LIST
-    # }
-    # return render(request, "leads/lead_list.html", context)
+# 2) с помощью  queryset  получаем наши обьекты из модели Lead и передаеим в конткест
+# leads = Lead.objects.all()
+# 1)можно третьим параметром передавать в темплейты контекст(наши переменные)  и потом во вьюхах их принимать {{_}}
+# context = {
+#     "leads": leads
+#     # "object_list": leads >>> it's works for  jango.views.generic LIST
+# }
+# return render(request, "leads/lead_list.html", context)
 
 class LeadListView(LoginRequiredMixin, ListView):
     template_name = "leads/lead_list.html"
+
     # queryset = Lead.objects.all()  # getting all list of records(leads).... also by default in context passed object_list!!!! not leads!!!
 
     # context_object_name = "leads"  >>> but also we can indicate name of variable
@@ -51,13 +53,28 @@ class LeadListView(LoginRequiredMixin, ListView):
 
         """initial queryset for entire organization"""
         if user.is_organizer:  # 2) if user is organizer so we filtered the leads by his profile(his organization)
-            queryset = Lead.objects.filter(organization=user.userprofile)
+            queryset = Lead.objects.filter(organization=user.userprofile, agent__isnull=False)
         else:  # 3) then the user should be an agent
-            queryset = Lead.objects.filter(organization=user.agent.organization)  # 4) take all organiztions from agent model for all agents
+            queryset = Lead.objects.filter(organization=user.agent.organization,
+                                           agent__isnull=False)  # 4) take all organiztions from agent model for all agents
             """filter"""
             queryset = queryset.filter(agent__user=user)  # 5) take certain organizations by logged user
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super(LeadListView, self).get_context_data(**kwargs)
+        user = self.request.user  # 1) take our logged in user
+
+        """below how to pass context in class BaseView """
+        if user.is_organizer:
+            queryset = Lead.objects.filter(
+                organization=user.userprofile,
+                agent__isnull=True
+            )  # take our logged user and it shouldn't be an agent
+            context.update({
+                "unassigned_leads": queryset
+            })
+        return context
 
 
 # pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
@@ -118,7 +135,8 @@ class LeadCreateView(OrganiserAndLoginRequiredMixin, CreateView):
             recipient_list=["jiyimek160@6ekk.com"]
         )  # http://i.imgur.com/LLu19AL.png - if it shows - need to setup our credentials in setting.py(http://i.imgur.com/i1HlgVc.png)
 
-        return super(LeadCreateView, self).form_valid(form)  # вызываем родительский метод form_valid что бы проверить на корректность данных в форме
+        return super(LeadCreateView, self).form_valid(
+            form)  # вызываем родительский метод form_valid что бы проверить на корректность данных в форме
 
 
 # def lead_update(request, pk):
@@ -157,6 +175,7 @@ class LeadUpdateView(OrganiserAndLoginRequiredMixin, UpdateView):
 
 class LeadDeleteView(OrganiserAndLoginRequiredMixin, DeleteView):
     template_name = "leads/lead_delete.html"
+
     # queryset = Lead.objects.all()
 
     def get_queryset(self):
@@ -221,5 +240,3 @@ class LeadDeleteView(OrganiserAndLoginRequiredMixin, DeleteView):
 #         "form": form
 #     }
 #     return render(request, "leads/lead_create.html", context)
-
-
