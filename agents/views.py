@@ -1,5 +1,7 @@
 from django.shortcuts import reverse
+import random
 from django.views import generic
+from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from leads.models import Agent
 from .forms import AgentModelForm
@@ -28,11 +30,31 @@ class AgentCreateView(OrganiserAndLoginRequiredMixin, generic.CreateView):
     
     def form_valid(self, form):
         """что бы не падала ошибка при созданнии агента, то нужно в нее передать организацию(ЮзерПрофайл)"""
-        agent = form.save(commit=False)  # берем полученную форму(с юзером,но без организации), НО не сохраняем её в бд
+        # agent = form.save(commit=False)  # берем полученную форму(с юзером,но без организации), НО не сохраняем её в бд
+
+        # создаем юзера уже с полной формой ззаполнения(именем,паролем,мылом...)
+        user = form.save(commit=False)
+        user.is_agent = True
+        user.is_organizer = False
+        # user.password = 'asdasdas' - it's hardcoding - bad practice - better reuse special method
+        user.set_password(f'{random.randint(0,1000000)}')
+        user.save()
+        # после создания ползьзователся создаем к нему агента
+        Agent.objects.create(
+            user=user,
+            organization=self.request.user.userprofile,  # организиция - это наш залогиненный юзер
+
+        )
+        send_mail(
+            subject="You are invited to be an agent",
+            message="You were added as an agent on DJCRM> please come to login to start to working.",
+            from_email="admin@admin.com",
+            recipient_list=[user.email],  # who is actually sending email to
+        )
         """у ЗАЛОГИНЕННОГО пользователя по дефолту создаются юезрпрофайл(организация) через signals.
          Достаем его и записываем в модель агента"""
-        agent.organization = self.request.user.userprofile
-        agent.save()  # а теперь с атрибутом organization можем сохранить только что созданную запись агента
+        # agent.organization = self.request.user.userprofile
+        # agent.save()  # а теперь с атрибутом organization можем сохранить только что созданную запись агента
         return super(AgentCreateView, self).form_valid(form)
 
 
