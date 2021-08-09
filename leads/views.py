@@ -55,7 +55,7 @@ class LeadListView(LoginRequiredMixin, ListView):
         else:  # 3) then the user should be an agent
             queryset = Lead.objects.filter(organization=user.agent.organization)  # 4) take all organiztions from agent model for all agents
             """filter"""
-            queryset = queryset.filter(agent_user=user)  # 5) take certain organizations by logged user
+            queryset = queryset.filter(agent__user=user)  # 5) take certain organizations by logged user
         return queryset
 
 
