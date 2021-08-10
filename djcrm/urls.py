@@ -17,10 +17,9 @@ urlpatterns = [
     path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('password-reset-complete/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('signup/', SignupView.as_view(), name='signup')
+    path('signup/', SignupView.as_view(), name='signup'),
 
 ]
-
 
 """при деплое нужно указывать статические фалйы для digital oceone space  для управения статич файлов(при посте новых 
 и чтении существющих)... т.е. нужно чекнуть если дебаг тру,т.е. на деплое, то указываем путь к нашим статич файлам"""

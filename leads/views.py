@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 from .models import Lead, Agent
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import LeadForm, LeadModelForm, CustomUserCreationForm
+from .forms import LeadForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm
 from agents.mixins import OrganiserAndLoginRequiredMixin
 
 # Create your views here.
@@ -184,6 +184,28 @@ class LeadDeleteView(OrganiserAndLoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse("leads:lead-list")
+
+
+class AssignAgentView(OrganiserAndLoginRequiredMixin, FormView):
+    template_name = "leads/assign_agent.html"
+    form_class = AssignAgentForm
+
+    def get_form_kwargs(self, **kwargs):
+        """so we have easy way to pass the extra arguments ibti the form"""
+        kwargs = super(AssignAgentView, self).get_form_kwargs(*kwargs)
+        kwargs.update({
+            'request': self.request
+        })
+        return kwargs
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
+
+    def form_valid(self, form):
+        """здесь указываем что должно произойти после ввода в форму данных от юзера и их подтверждение"""
+        print(form.cleaned_data)  # >>> {'agent': <Agent: Username_agent>}
+        return super(AssignAgentView, self).form_valid(form)
+
 
 
 """two extended ways to do CRUD funcs proceed """
