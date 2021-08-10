@@ -25,7 +25,7 @@ class Lead(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     age = models.IntegerField(default=0)
-    organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    organization = models.ForeignKey(UserProfile, default=1, on_delete=models.CASCADE)
     # TODO need to resolve a problem with registration lead without assigned to him any organizations
     agent = models.ForeignKey("Agent", null=True, blank=True, on_delete=models.SET_NULL)
 

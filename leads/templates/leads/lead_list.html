@@ -41,12 +41,14 @@
             </div>
             {% endfor %}
             {% if unassigned_leads.exists %}
-            <div class="flex">
-                <div class="p-4 w-full">
-                <h1 lass="text-4xl text-gray-800">Unassigned leads</h1>
-                    </div>
+
+            <div class="mt -5 flex flex-wrap -m-4">
+                <div class="w-full mb-3 pt-6 pb-2 flex justify-between items-center border-b border-gray-200">
+                    <h1 class="text-4xl text-gray-800">Unassigned leads</h1>
+                </div>
+                <hr>
                 <!--            { % for lead in lead % } - it works if we pass in View our context by key, if we use TemplateView by default the key of queryset is "object_list"-->
-                {% for lead in object_list %}
+                {% for lead in unassigned_leads %}
                 <div class="p-2 lg:w-1/2 md:w-full">
                     <div class="flex border-2 rounded-lg border-gray-200 border-opacity-50 p-8 sm:flex-row flex-col">
                         <div class="w-16 h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-purple-100 text-purple-500 flex-shrink-0">
@@ -63,7 +65,8 @@
                                 vegan taxidermy. Gastropub indxgo juice poutine.</p>
                             <a href="{% url 'leads:lead-detail' lead.pk %}"
                                class="mt-3 text-purple-500 inline-flex items-center">View this lead
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                     stroke-linejoin="round"
                                      stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
                                     <path d="M5 12h14M12 5l7 7-7 7"></path>
                                 </svg>
@@ -73,7 +76,6 @@
                 </div>
                 {% endfor %}
             </div>
-
             {% endif %}
         </div>
     </div>

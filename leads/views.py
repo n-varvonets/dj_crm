@@ -117,7 +117,7 @@ class LeadDetailView(OrganiserAndLoginRequiredMixin, DetailView):
 #     return render(request, "leads/lead_create.html", context)
 
 
-class LeadCreateView(OrganiserAndLoginRequiredMixin, CreateView):
+class LeadCreateView(LoginRequiredMixin, CreateView):
     template_name = "leads/lead_create.html"
     # we have to pass the form that we want to work with
     form_class = LeadModelForm
@@ -135,7 +135,7 @@ class LeadCreateView(OrganiserAndLoginRequiredMixin, CreateView):
             recipient_list=["jiyimek160@6ekk.com"]
         )  # http://i.imgur.com/LLu19AL.png - if it shows - need to setup our credentials in setting.py(http://i.imgur.com/i1HlgVc.png)
 
-        return super(LeadCreateView, self).form_valid(
+        return super(LoginRequiredMixin, self).form_valid(
             form)  # вызываем родительский метод form_valid что бы проверить на корректность данных в форме
 
 
