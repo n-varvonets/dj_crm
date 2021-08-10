@@ -191,11 +191,17 @@ class AssignAgentView(OrganiserAndLoginRequiredMixin, FormView):
     form_class = AssignAgentForm
 
     def get_form_kwargs(self, **kwargs):
-        """so we have easy way to pass the extra arguments ibti the form"""
+        """so we have easy way to pass the extra arguments into(request with user) the form"""
+        # print('1', kwargs) >>> 1 {}
         kwargs = super(AssignAgentView, self).get_form_kwargs(*kwargs)
+        # print('2', kwargs) >>> 2 {'initial': {}, 'prefix': None, 'data': <QueryDict: {'csrfmiddlewaretoken':
+        # ['qmb4CShpTD0Ed8vXLJEqCxApfyGcDWVtuo3ZwKlx4gdECcwSKMBW7ErMDYsXcnVU'], 'agent': ['1']}>, 'files': <MultiValueDict: {}>}
         kwargs.update({
             'request': self.request
         })
+        # print('3', kwargs)  >>> 3 {'initial': {}, 'prefix': None, 'data': <QueryDict: {'csrfmiddlewaretoken':
+        # ['qmb4CShpTD0Ed8vXLJEqCxApfyGcDWVtuo3ZwKlx4gdECcwSKMBW7ErMDYsXcnVU'], 'agent': ['1']}>, 'files': <MultiValueDict: {}>,
+        # 'request': <WSGIRequest: POST '/leads/1/assign-agent/'>} {'agent': <Agent: Username_agent>}
         return kwargs
 
     def get_success_url(self):
@@ -203,7 +209,11 @@ class AssignAgentView(OrganiserAndLoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         """здесь указываем что должно произойти после ввода в форму данных от юзера и их подтверждение"""
-        print(form.cleaned_data)  # >>> {'agent': <Agent: Username_agent>}
+        # print(form.cleaned_data)  # >>> {'agent': <Agent: Username_agent>}
+        agent = form.cleaned_data['agent']
+        lead = Lead.objects.get(id=self.kwargs['pk'])
+        lead.agent = agent
+        lead.save()
         return super(AssignAgentView, self).form_valid(form)
 
 
