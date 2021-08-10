@@ -22,6 +22,10 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr>
+                    <td class="px-4 py-3">Unassigned</td>
+                    <td class="px-4 py-3">{{ unassigned_lead_count }}</td>
+                </tr>
                 {% for category in category_list %}
                 <tr>
                     <td class="px-4 py-3">{{ category.name }}</td>
