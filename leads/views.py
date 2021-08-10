@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
-from .models import Lead, Agent
+from .models import Lead, Agent, Category
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import LeadForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm
@@ -215,6 +215,20 @@ class AssignAgentView(OrganiserAndLoginRequiredMixin, FormView):
         lead.agent = agent
         lead.save()
         return super(AssignAgentView, self).form_valid(form)
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    template_name = "leads/category_list.html"
+    context_object_name = "category_list"
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organizer:
+            queryset = Category.objects.filter(organization=user.userprofile)
+        else:
+            queryset = Category.objects.filter(organization=user.agent.organization)
+        return queryset
+
 
 
 

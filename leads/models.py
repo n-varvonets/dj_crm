@@ -46,6 +46,9 @@ class Agent(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=30)  # New, Contacted, Remind, Success, Lost
 
+    # every category needs to be linked to organization
+    organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+
     def __str__(self):
         return self.name
 
