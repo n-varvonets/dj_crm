@@ -26,8 +26,10 @@ class Lead(models.Model):
     last_name = models.CharField(max_length=20)
     age = models.IntegerField(default=0)
     organization = models.ForeignKey(UserProfile, default=1, on_delete=models.CASCADE)
-    # TODO need to resolve a problem with registration lead without assigned to him any organizations
     agent = models.ForeignKey("Agent", null=True, blank=True, on_delete=models.SET_NULL)
+
+    # every lead will be assigned on category
+    category = models.ForeignKey("Category", null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -39,6 +41,14 @@ class Agent(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=30)  # New, Contacted, Remind, Success, Lost
+
+    def __str__(self):
+        return self.name
+
 
 
 def post_user_created_signal(sender, instance, created, **kwargs):
