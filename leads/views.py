@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from .models import Lead, Agent, Category
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import LeadForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm
+from .forms import LeadForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm, LeadCategoryUpdateForm
 from agents.mixins import OrganiserAndLoginRequiredMixin
 
 # Create your views here.
@@ -98,7 +98,7 @@ class LeadDetailView(OrganiserAndLoginRequiredMixin, DetailView):
             queryset = Lead.objects.filter(organization=user.userprofile)
         else:
             queryset = Lead.objects.filter(organization=user.agent.organization)
-            queryset = queryset.filter(agent_user=user)
+            queryset = queryset.filter(agent__user=user)
         return queryset
 
 
@@ -167,6 +167,24 @@ class LeadUpdateView(OrganiserAndLoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse("leads:lead-list")
 
+
+class LeadCategoryUpdateView(OrganiserAndLoginRequiredMixin, UpdateView):
+    template_name = "leads/lead_category_update.html"
+    form_class = LeadCategoryUpdateForm
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organizer:
+            queryset = Lead.objects.filter(organization=user.userprofile)
+        else:
+            queryset = Lead.objects.filter(organization=user.agent.organization)
+            queryset = queryset.filter(agent__user=user)
+        return queryset
+
+    def get_success_url(self):
+        """wanna redirect to lead-detail(not lead-list). For it need to pass pl of lead"""
+        # self.get_object() return the actual lead
+        return reverse("leads:lead-detail", kwargs={"pk": self.get_object().id})
 
 # def lead_delete(request, pk):
 #     lead = Lead.objects.get(id=pk)  # grab the specific lead

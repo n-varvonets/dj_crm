@@ -56,4 +56,14 @@ class AssignAgentForm(forms.Form):
         self.fields['agent'].queryset = agents# 9)и меняем установленное в нашем поле его значение. После вызова супер - потому что наше поле 'agent' еще не существует
 
 
+class LeadCategoryUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Lead
+        fields = (
+            "category",
+        )
+
+
+
+
 

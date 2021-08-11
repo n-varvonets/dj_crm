@@ -24,7 +24,9 @@
 <!--                { % for lead in leads % }  - it's works if we refactor method get_context_data in CategoryDetailView-->
                 {% for lead in category.leads.all %}<!-- in templates we don't use "()" for calling method-->
                 <tr>
-                    <td class="px-4 py-3">{{ lead.first_name }}</td>
+                    <td class="px-4 py-3">
+                        <a class="hover:text-blue-500" href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.first_name }}</a>
+                    </td>
                     <td class="px-4 py-3">{{ lead.last_name }}</td>
                 </tr>
                 {% endfor %}

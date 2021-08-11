@@ -23,6 +23,8 @@ urlpatterns = [
     path('<int:pk>/', LeadDetailView.as_view(), name='lead-detail'),  # pk - это уникальный айди записи в таблице, по кторому мы можем достучаться к конкретной записи
     # path('<int:pk>/update/', lead_update, name='lead-update'),
     path('<int:pk>/update/', LeadUpdateView.as_view(), name='lead-update'),
+    path('<int:pk>/category-update/', LeadCategoryUpdateView.as_view(), name='lead-category-update'),
+
     # path('<int:pk>/delete/', lead_delete, name='lead-delete'),
     path('<int:pk>/delete/', LeadDeleteView.as_view(), name='lead-delete'),
     # path('create/', lead_create, name='lead-create'),
