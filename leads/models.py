@@ -29,7 +29,7 @@ class Lead(models.Model):
     agent = models.ForeignKey("Agent", null=True, blank=True, on_delete=models.SET_NULL)
 
     # every lead will be assigned on category
-    category = models.ForeignKey("Category", null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey("Category", related_name="leads", null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

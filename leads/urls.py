@@ -30,5 +30,6 @@ urlpatterns = [
 
     path('create/', LeadCreateView.as_view(), name='lead-create'),
     path('categories/', CategoryListView.as_view(), name='category-list'),
+    path('category-detail/<int:pk>/', CategoryDetailView.as_view(), name='category-detail'),
 
 ]

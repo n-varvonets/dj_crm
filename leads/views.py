@@ -222,6 +222,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
     context_object_name = "category_list"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """add extra data(new necessary variable to my template) """
         context = super(CategoryListView, self).get_context_data(**kwargs)
         user = self.request.user
 
@@ -243,7 +244,43 @@ class CategoryListView(LoginRequiredMixin, ListView):
         return queryset
 
 
+class CategoryDetailView(LoginRequiredMixin, DetailView):
+    template_name = "leads/category_detail.html"
+    context_object_name = 'category'
 
+    # def get_object(self, queryset=None):
+    #     """this method the part of DetailView library and we can use him
+    #     to fetch actual instance of every model which we work with"""
+    #     pass
+    #
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #
+    #     """if take a look at category model the way that we can fetch the all leads that belong to specific category"""
+    #     context = super(CategoryDetailView, self).get_context_data(**kwargs)
+    #
+    #     """there 3 ways to take the instances of leads which belong the specific category"""
+    #     # 1) Fetch the actual category and after it looking for them in Lead
+    #     # qs_leads = Lead.objects.filter(category=self.get_object())
+    #     # 2) reverse look up where we checking the all the leads by ForeignKey
+    #     # qs_leads = self.get_object().lead_set.all()  # <model>_set - take record of <model> by our current model
+    #     # 3) also we can take leads by specifying in Lead model special field as "related_name='leads'"
+    #     qs_leads = self.get_object().leads.all()
+    #
+    #     context.update({
+    #         'leads': qs_leads
+    #     })
+    #     return context
+    #
+    #  CONCLUSSION: actually the result of func can proceed template by  1 str in template by 3d way
+    #  as showed above and specifying in Lead model special field as "related_name='leads'" as object_name
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organizer:
+            queryset = Category.objects.filter(organization=user.userprofile)
+        else:
+            queryset = Category.objects.filter(organization=user.agent.organization)
+        return queryset
 
 """two extended ways to do CRUD funcs proceed """
 # def lead_update(request, pk):

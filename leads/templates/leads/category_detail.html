@@ -4,9 +4,9 @@
 <section class="text-gray-600 body-font">
     <div class="container px-5 py-24 mx-auto">
         <div class="flex flex-col text-center w-full mb-20">
-            <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Categories</h1>
+            <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">{{ category.name }}</h1>
             <p class="lg:w-2/3 mx-auto leading-relaxed text-base">
-                These categories segment the leads
+                These are the leads under this category
             </p>
         </div>
         <div class="lg:w-2/3 w-full mx-auto overflow-auto">
@@ -14,22 +14,18 @@
                 <thead>
                 <tr>
                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">
-                        Name
+                        First Name
                     </th>
-                    <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Lead
-                        Count
+                    <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Last Name
                     </th>
                 </tr>
                 </thead>
                 <tbody>
+<!--                { % for lead in leads % }  - it's works if we refactor method get_context_data in CategoryDetailView-->
+                {% for lead in category.leads.all %}<!-- in templates we don't use "()" for calling method-->
                 <tr>
-                    <td class="px-4 py-3">Unassigned</td>
-                    <td class="px-4 py-3">{{ unassigned_lead_count }}</td>
-                </tr>
-                {% for category in category_list %}
-                <tr>
-                    <td class="px-4 py-3"><a href="{% url 'leads:category-detail' category.pk %}">{{ category.name }}</a></td>
-                    <td class="px-4 py-3">TODO count</td>
+                    <td class="px-4 py-3">{{ lead.first_name }}</td>
+                    <td class="px-4 py-3">{{ lead.last_name }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
