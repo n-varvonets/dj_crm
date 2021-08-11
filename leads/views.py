@@ -165,7 +165,7 @@ class LeadUpdateView(OrganiserAndLoginRequiredMixin, UpdateView):
         return Lead.objects.filter(organization=user.userprofile)
 
     def get_success_url(self):
-        return reverse("leads:lead-list")
+        return reverse("leads:lead-detail", kwargs={"pk": self.get_object().id})
 
 
 class LeadCategoryUpdateView(OrganiserAndLoginRequiredMixin, UpdateView):

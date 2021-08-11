@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load tailwind_filters %}
+
 {% block content %}
 
 
@@ -17,19 +19,15 @@
                 </div>
                 <form method="post">
                     {% csrf_token %}<!-- csrf_token - security way to post the information-->
-                    {{ form.as_p }}
-                    <button type="submit">Submit</button>
+                    {{ form|crispy }}
+                    <button type="submit" class="w-full text-white bg-purple-500 hover:bg-purple-600 mt-2 px-3 py-2 rounded-md">Submit</button>
                 </form>
-                <p>The agent responsible for this lead is : {{ lead.agent }}</p>
-                <div class="w-full mt-2 py-2 flex justify-between items-center border-t border-b border-gray-200">
-                    <div>
-                        <a href="{% url 'leads:lead-list' %}"
-                           class="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Go
-                            back to leads</a>
+                <div class="w-full mt-2 py-1 flex items-center border-t border-gray-200">
+                    <div class="w-full text-center text-white bg-purple-500 mr-1 hover:bg-purple-600 mt-2 px-3 py-2 rounded-md">
+                        <a href="{% url 'agents:agent-list' %}">Go back to agents</a>
                     </div>
-                    <div>
-                        <a href="{% url 'agents:agent-delete' agent.pk %}"
-                           class="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Delete</a>
+                    <div class="w-full text-center text-white bg-purple-500 ml-1 hover:bg-purple-600 mt-2 px-3 py-2 rounded-md">
+                        <a href="{% url 'agents:agent-delete' agent.pk %}">Delete</a>
                     </div>
                 </div>
             </div>

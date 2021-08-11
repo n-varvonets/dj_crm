@@ -37,8 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party apps
+    'crispy_forms',
+    'crispy_tailwind',
+
+    # Local apps
     'leads',
-    'agents'
+    'agents',
+
 ]
 
 MIDDLEWARE = [
@@ -140,3 +147,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # but right no
 
 LOGIN_REDIRECT_URL = '/leads'
 LOGIN_URL = '/login'  # need for LoginRequiredMixin... for redirecting from restricted page not authed users to login page.
+
+# for ability to use Crispy forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
+CRISPY_TEMPLATE_PACK = 'tailwind'
