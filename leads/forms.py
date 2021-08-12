@@ -8,6 +8,7 @@ User = get_user_model()
 
 class LeadModelForm(forms.ModelForm):
     """if we want to display fields from model including relations O2M, M2M"""
+
     class Meta:  # in MEta we specify information about the form
         model = Lead
         """ specify the fields which we want to display in actual form from model"""
@@ -16,6 +17,9 @@ class LeadModelForm(forms.ModelForm):
             "last_name",
             "age",
             "agent",
+            'description',
+            'phone_number',
+            'email',
         )
 
 
@@ -41,7 +45,9 @@ class AssignAgentForm(forms.Form):
 
     """1)above it's good example of choice field, but Django provide mach better"""
     # agent = forms.ModelChoiceField(queryset=Agent.objects.none())  # 1/2) it's hard coding to indicate queryset not dynamically
-    agent = forms.ModelChoiceField(queryset=Agent.objects.none())  # 2)it's very difficult to dynamically to specify the queryset
+    agent = forms.ModelChoiceField(
+        queryset=Agent.objects.none())  # 2)it's very difficult to dynamically to specify the queryset
+
     # 3)so we need to overwrite the values of queryset every time the worm is rendering
 
     # 4)for this we need to overwrite init method. For it we have to pass additional arguments(kwargs) about the user
@@ -52,8 +58,10 @@ class AssignAgentForm(forms.Form):
         request = kwargs.pop("request")  # 7)со всех получаемых аргементов ВЫРЕЗАЕМ наш доп.аргумент(реквест)
         # print(request.user)   # >>> nick
         agents = Agent.objects.filter(organization=request.user.userprofile)  # берем наших всех агентов текущего юзера
-        super(AssignAgentForm, self).__init__(*args, **kwargs)  # 8)и передаем его дальше без нашего доп.аргумента("request") как ни в чем и не бывало
-        self.fields['agent'].queryset = agents# 9)и меняем установленное в нашем поле его значение. После вызова супер - потому что наше поле 'agent' еще не существует
+        super(AssignAgentForm, self).__init__(*args,
+                                              **kwargs)  # 8)и передаем его дальше без нашего доп.аргумента("request") как ни в чем и не бывало
+        self.fields[
+            'agent'].queryset = agents  # 9)и меняем установленное в нашем поле его значение. После вызова супер - потому что наше поле 'agent' еще не существует
 
 
 class LeadCategoryUpdateForm(forms.ModelForm):
@@ -62,8 +70,3 @@ class LeadCategoryUpdateForm(forms.ModelForm):
         fields = (
             "category",
         )
-
-
-
-
-

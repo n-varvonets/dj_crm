@@ -147,7 +147,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # but right no
 
 LOGIN_REDIRECT_URL = '/leads'
 LOGIN_URL = '/login'  # need for LoginRequiredMixin... for redirecting from restricted page not authed users to login page.
+LOGOUT_REDIRECT_URL = '/'
 
-# for ability to use Crispy forms
+# for ability to use Crispy  forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
 CRISPY_TEMPLATE_PACK = 'tailwind'

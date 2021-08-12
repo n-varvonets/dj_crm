@@ -117,7 +117,7 @@ class LeadDetailView(OrganiserAndLoginRequiredMixin, DetailView):
 #     return render(request, "leads/lead_create.html", context)
 
 
-class LeadCreateView(LoginRequiredMixin, CreateView):
+class LeadCreateView(OrganiserAndLoginRequiredMixin, CreateView):
     template_name = "leads/lead_create.html"
     # we have to pass the form that we want to work with
     form_class = LeadModelForm
@@ -128,6 +128,10 @@ class LeadCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         """then form is valid and post request is recieved so we can send email about it to some mail"""
+
+        lead = form.save(commit=False)
+        lead.organization = self.request.user.userprofile
+        lead.save()
         send_mail(
             subject="Theme of message:'The lead was created'",
             message="The main area of message:'Got to the site to see the new lead'",
@@ -135,7 +139,7 @@ class LeadCreateView(LoginRequiredMixin, CreateView):
             recipient_list=["jiyimek160@6ekk.com"]
         )  # http://i.imgur.com/LLu19AL.png - if it shows - need to setup our credentials in setting.py(http://i.imgur.com/i1HlgVc.png)
 
-        return super(LoginRequiredMixin, self).form_valid(
+        return super(LeadCreateView, self).form_valid(
             form)  # вызываем родительский метод form_valid что бы проверить на корректность данных в форме
 
 
@@ -191,6 +195,7 @@ class LeadCategoryUpdateView(OrganiserAndLoginRequiredMixin, UpdateView):
 #     lead.delete()
 #     return redirect("/leads")
 
+
 class LeadDeleteView(OrganiserAndLoginRequiredMixin, DeleteView):
     template_name = "leads/lead_delete.html"
 
@@ -245,7 +250,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
         user = self.request.user
 
         if user.is_organizer:
-            queryset = Lead.objects.filter(organization=user.userprofile)
+             queryset = Lead.objects.filter(organization=user.userprofile)
         else:
             queryset = Lead.objects.filter(organization=user.agent.organization)
         context.update({
