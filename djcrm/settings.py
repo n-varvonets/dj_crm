@@ -24,7 +24,7 @@ env = environ.Env(
 # значения(с файла djcrm/.env) заэкспортируем в консоле, то сервер запуститься без ошибок
 # environ.Env.read_env()
 READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=False)
-if READ_DOT_ENV_FILE: # по дефолту мы установили это значение - False(что бы команда не читала локально SECRET_KEY in djcrm/.env без эскортирования вручную READ_DOT_ENV_FILE=True)
+if READ_DOT_ENV_FILE: # по дефолту мы установили это значение - False(что бы команда не читала локально SECRET_KEY in djcrm/.env без эскортирования вручную export READ_DOT_ENV_FILE=True)
     """ и если кто-то вручную в консоле прописал export READ_DOT_ENV_FILE=True,
      то тогда читаем SECRET_KEY in djcrm/.env  lkz pfgecrf l;fyub"""
     environ.Env.read_env()
@@ -98,10 +98,20 @@ WSGI_APPLICATION = 'djcrm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }  - that's how it was in local production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT"),
     }
 }
 
