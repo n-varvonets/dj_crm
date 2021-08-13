@@ -47,6 +47,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',  # added for separating local env from prod for static files   http://whitenoise.evans.io/en/stable/django.html
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,6 +66,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -158,7 +160,10 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 # так же необходимо указать путь ко всем статическим файлам, которые должны быть расположены в одном месте
-STATIC_ROOT = "static_root"
+STATIC_ROOT = "static_root"  # все локально добавленные статичческие файлы можно собрать в это директории следю командой "python manage.py collectstatic"
+# STATIC_ROOT = BASE_DIR / 'staticfiles'#  ну или  указать напрмую диркторию к статич файлам(выше вариант лучше)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
