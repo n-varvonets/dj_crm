@@ -13,20 +13,19 @@
                 <div class="flex mb-4">
                     <a href="{% url 'agents:agent-detail' agent.pk %}"
                        class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Over view</a>
-                    <a class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Reviews</a>
                     <a href="{% url 'agents:agent-update' agent.pk %}"
-                       class="flex-grow text-purple-500 border-b-2 border-purple-500 py-2 text-lg px-1">Update</a>
+                       class="flex-grow text-red-700 border-b-2 border-red-800 py-2 text-lg px-1">Update</a>
                 </div>
                 <form method="post">
                     {% csrf_token %}<!-- csrf_token - security way to post the information-->
                     {{ form|crispy }}
-                    <button type="submit" class="w-full text-white bg-purple-500 hover:bg-purple-600 mt-2 px-3 py-2 rounded-md">Submit</button>
+                    <button type="submit" class="w-full text-white bg-red-700 hover:bg-red-800 mt-2 px-3 py-2 rounded-md">Submit</button>
                 </form>
                 <div class="w-full mt-2 py-1 flex items-center border-t border-gray-200">
-                    <div class="w-full text-center text-white bg-purple-500 mr-1 hover:bg-purple-600 mt-2 px-3 py-2 rounded-md">
+                    <div class="w-full text-center text-white bg-red-700 mr-1 hover:bg-red-800 mt-2 px-3 py-2 rounded-md">
                         <a href="{% url 'agents:agent-list' %}">Go back to agents</a>
                     </div>
-                    <div class="w-full text-center text-white bg-purple-500 ml-1 hover:bg-purple-600 mt-2 px-3 py-2 rounded-md">
+                    <div class="w-full text-center text-white bg-red-700 ml-1 hover:bg-red-800 mt-2 px-3 py-2 rounded-md">
                         <a href="{% url 'agents:agent-delete' agent.pk %}">Delete</a>
                     </div>
                 </div>

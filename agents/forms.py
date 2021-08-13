@@ -14,8 +14,6 @@ class AgentModelForm(forms.ModelForm):
         #     'user',
         # )
         fields = (
-            'email',
             'username',
-            'first_name',
-            'last_name',
+            'email',
         )

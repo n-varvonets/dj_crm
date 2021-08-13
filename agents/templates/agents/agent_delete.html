@@ -7,7 +7,7 @@
     <form method="post" class="mt-5">
         {% csrf_token %}<!-- csrf_token - security way to post the information-->
         {{ form|crispy }} <!--.as_p - как параграф... просто вертикально ставить  fields of model-->
-        <button type="submit" class="w-full text-white bg-purple-500 hover:bg-purple-600 mt-2 px-3 py-2 rounded-md">
+        <button type="submit" class="w-full text-white bg-red-700 hover:bg-red-800 mt-2 px-3 py-2 rounded-md">
             Submit
         </button>
     </form>
