@@ -11,19 +11,35 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+
+env = environ.Env(
+    #
+    DEBUG=(bool, False)
+)
+# Но в проде мы его не будем использовать, по тому что .env не хранится в репозитории(желтым цветом для гита).
+# мы его используем локально для чтения наших переменных  DEBUG and SECRET_KEY  в фйале djcrm/.env
+# мы даже его можем сейчас закоментить(упадет ошибка http://i.imgur.com/Ny5lyhD.png), но если для нашей сессии мы эти
+# значения(с файла djcrm/.env) заэкспортируем в консоле, то сервер запуститься без ошибок
+# environ.Env.read_env()
+READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=False)
+if READ_DOT_ENV_FILE: # по дефолту мы установили это значение - False(что бы команда не читала локально SECRET_KEY in djcrm/.env без эскортирования вручную READ_DOT_ENV_FILE=True)
+    """ и если кто-то вручную в консоле прописал export READ_DOT_ENV_FILE=True,
+     то тогда читаем SECRET_KEY in djcrm/.env  lkz pfgecrf l;fyub"""
+    environ.Env.read_env()
+
+# False if not in os.environ
+DEBUG = env('DEBUG')
+
+# Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
+SECRET_KEY = env('SECRET_KEY')
+
+# print(DEBUG, SECRET_KEY)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gmpv87ixu^ovoecrfv411^_8it+xp^@r%y@2wqzi^9z@mud+9n'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
