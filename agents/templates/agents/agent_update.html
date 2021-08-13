@@ -12,9 +12,9 @@
                 <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{ agent.user.username }}</h1>
                 <div class="flex mb-4">
                     <a href="{% url 'agents:agent-detail' agent.pk %}"
-                       class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Over view</a>
+                       class="flex-grow text-center border-b-2 border-gray-300 py-2 text-lg px-1">Over view</a>
                     <a href="{% url 'agents:agent-update' agent.pk %}"
-                       class="flex-grow text-red-700 border-b-2 border-red-800 py-2 text-lg px-1">Update</a>
+                       class="flex-grow text-center text-red-700 border-b-2 border-red-800 py-2 text-lg px-1">Update</a>
                 </div>
                 <form method="post">
                     {% csrf_token %}<!-- csrf_token - security way to post the information-->
