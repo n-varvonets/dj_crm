@@ -42,8 +42,8 @@ class AgentCreateView(OrganiserAndLoginRequiredMixin, generic.CreateView):
         # после создания ползьзователся создаем к нему агента
         Agent.objects.create(
             user=user,
+            email=user.email,
             organization=self.request.user.userprofile,  # организиция - это наш залогиненный юзер
-
         )
         send_mail(
             subject="You are invited to be an agent",

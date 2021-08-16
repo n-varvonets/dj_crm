@@ -1,11 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-<a href="{% url 'leads:lead-list' %}">Go back to leads</a>
-<hr/>
-<h1>Assign an agent to this lead</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+
+
+<div class="max-w-lg mx-auto">
+    <h1 class="text-center text-3xl text-gray-800 pb-1 pt-8 mb-4">Assign an agent to this lead</h1>
+
+    <form method="post" class="text-center text-2xl mt-4text-gray-800 pb-1">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="w-full mt-6 py-1 flex items-center border-t border-gray-200">
+            <button type="submit" class="w-full text-center mr-2 text-white bg-red-700 ml-1 hover:bg-red-800 mt-2 px-3 py-2 rounded-md">Submit</button>
+            <div class="w-full text-center text-white bg-red-700 ml-2 hover:bg-red-800 mt-2 px-3 py-2 rounded-md">
+                <a href="{% url 'agents:agent-list' %}">Go back to agents</a>
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock content %}
