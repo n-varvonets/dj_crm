@@ -15,19 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gmpv87ixu^ovoecrfv411^_8it+xp^@r%y@2wqzi^9z@mud+9n'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -127,12 +114,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# указывем путь к моим созданным статическим файлам
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
-# так же необходимо указать путь ко всем статическим файлам, которые должны быть расположены в одном месте
-STATIC_ROOT = "static_root"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -152,3 +134,9 @@ LOGOUT_REDIRECT_URL = '/'
 # for ability to use Crispy  forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
 CRISPY_TEMPLATE_PACK = 'tailwind'
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    from .prod_settings import *

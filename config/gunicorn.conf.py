@@ -1,0 +1,4 @@
+bind = '127.0.0.1:8000'
+workers = 3
+user = "nick_server"  # not root user on the server
+timeout = 120  # сколько времени может ожидать клиентская сторона ответа
