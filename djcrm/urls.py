@@ -25,3 +25,4 @@ urlpatterns = [
 и чтении существющих)... т.е. нужно чекнуть если дебаг тру,т.е. на деплое, то указываем путь к нашим статич файлам"""
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
