@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     # Local apps
     'leads',
     'agents',
-
 ]
 
 MIDDLEWARE = [
@@ -140,4 +139,3 @@ try:
     from .local_settings import *
 except ImportError:
     from .prod_settings import *
-
